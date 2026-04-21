@@ -13,10 +13,17 @@
         </div>
 
         <div class="flex items-center gap-6">
-            <div class="hidden md:flex items-center bg-cream/5 border border-cream/10 rounded-full px-4 py-1.5">
+            <form action="{% url 'home' %}" method="get" class="hidden md:flex items-center bg-cream/5 border border-cream/10 rounded-full px-4 py-1.5">
                 <span class="material-symbols-outlined text-lg text-cream/60">search</span>
-                <input class="bg-transparent border-none focus:ring-0 text-[10px] tracking-widest w-32 placeholder:text-cream/40 uppercase text-cream" placeholder="SEARCH" type="text"/>
-            </div>
+                <input
+                    name="search"
+                    type="text"
+                    value="{{ search|default_if_none:'' }}"
+                    class="bg-transparent border-none focus:ring-0 text-[10px] tracking-widest w-32 placeholder:text-cream/40 uppercase text-cream"
+                    placeholder="SEARCH"
+                />
+                <button type="submit" class="ml-2 text-[10px] uppercase tracking-widest text-matte-black bg-primary rounded px-2 py-1">GO</button>
+            </form>
 
             {% if user.is_authenticated %}
                 <div class="relative group">

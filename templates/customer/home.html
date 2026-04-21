@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>buyme</title>
+    <title>BuyMe | The Art of Refinement</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#dda71d", // Gold
-                        "background-light": "#f8f7f6", // Warm Cream base
-                        "background-dark": "#1A1A1A", // Matte Black
+                        "primary": "#dda71d",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#1A1A1A",
                         "cream": "#F5F5DC",
                         "matte-black": "#1A1A1A",
                     },
@@ -34,19 +34,16 @@
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .animate-reveal { animation: fadeIn 1.2s ease-out forwards; }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-matte-black dark:text-cream overflow-x-hidden">
@@ -55,22 +52,14 @@
 
 <main class="layout-container flex flex-col">
     <section class="relative h-[90vh] w-full overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(26,26,26,0.8) 0%, rgba(26,26,26,0) 50%), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80');"></div>
-        <div class="relative z-10 h-full max-w-[1440px] mx-auto flex flex-col justify-center px-6 lg:px-20">
-            <span class="text-primary font-semibold tracking-[0.4em] uppercase text-xs mb-4">Summer / Spring 2024</span>
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(26,26,26,0.9) 0%, rgba(26,26,26,0.2) 60%), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80');"></div>
+        <div class="relative z-10 h-full max-w-[1440px] mx-auto flex flex-col justify-center px-6 lg:px-20 animate-reveal">
+            <span class="text-primary font-semibold tracking-[0.4em] uppercase text-xs mb-4">Summer / Spring 2026</span>
             <h2 class="font-serif text-5xl md:text-8xl text-cream leading-tight mb-8">
                 The Art of <br/><i class="font-normal italic">Refinement</i>
             </h2>
-            <p class="text-cream/70 max-w-md text-sm md:text-base font-light leading-relaxed mb-10">
-                Experience the pinnacle of minimalist luxury. Our latest collection focuses on architectural silhouettes and the world's finest natural textiles.
-            </p>
             <div class="flex gap-4">
-                <button class="bg-primary text-matte-black px-10 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-all duration-300 rounded">
-                    Shop Collection
-                </button>
-                <button class="border border-cream/30 text-cream px-10 py-4 font-bold text-xs uppercase tracking-widest hover:bg-cream hover:text-matte-black transition-all duration-300 rounded">
-                    Discovery
-                </button>
+                <button class="bg-primary text-matte-black px-10 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-all duration-500 rounded-sm">Shop Collection</button>
             </div>
         </div>
     </section>
@@ -79,37 +68,39 @@
         <div class="flex justify-between items-end mb-16">
             <div>
                 <h3 class="font-serif text-3xl md:text-4xl italic mb-2">Curated Collections</h3>
-                <p class="text-cream/50 text-xs uppercase tracking-widest">Handcrafted essentials for the modern wardrobe</p>
+                <p class="text-cream/50 text-[10px] uppercase tracking-[0.2em]">Handcrafted essentials for the modern lifestyle</p>
             </div>
-            <a class="text-xs font-bold uppercase tracking-widest border-b border-primary text-primary pb-1" href="#">View All</a>
+            <a class="text-xs font-bold uppercase tracking-widest border-b border-primary text-primary pb-1 hover:text-white hover:border-white transition-colors" href="#">View All</a>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-cream/10">
-            {% for x in categories %}
             <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
-                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ x.image }}"/>
-                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
-                <div class="absolute bottom-10 left-10">
-                    <h4 class="font-serif text-2xl text-cream mb-2">{{ x.name }}</h4>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">{{x.description}}</span>
+                <img class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?auto=format&fit=crop&q=80"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-matte-black/80 via-transparent to-transparent group-hover:from-matte-black/90 transition-all flex flex-col justify-end p-10">
+                    <h4 class="font-serif text-2xl text-cream mb-2">Electronics</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 opacity-0 translate-y-4 group-hover:opacity-100 translate-y-0 transition-all duration-500">Premium Tech Pieces</span>
+                    <a href="{% url 'electronics' %}"><button class="w-fit bg-primary text-matte-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-700 hover:bg-white">Explore</button></a>
                 </div>
             </div>
-            {% endfor %}
-            
+
             <div class="group relative aspect-[3/4] overflow-hidden border-r border-cream/10">
-                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80"/>
-                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
-                <div class="absolute bottom-10 left-10">
-                    <h4 class="font-serif text-2xl text-cream mb-2">Fine Jewelry</h4>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Explore Category</span>
+                <img class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&q=80"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-matte-black/80 via-transparent to-transparent group-hover:from-matte-black/90 transition-all flex flex-col justify-end p-10">
+                    <h4 class="font-serif text-2xl text-cream mb-2">Luxury Handbags</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 opacity-0 translate-y-4 group-hover:opacity-100 translate-y-0 transition-all duration-500">Iconic Ladies Style</span>
+                      <a href="{% url 'handbag' %}"><button class="w-fit bg-primary text-matte-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-700 hover:bg-white">Explore</button></a>
                 </div>
             </div>
+
             <div class="group relative aspect-[3/4] overflow-hidden">
-                <img class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1539109132382-381bb3f1c2b3?auto=format&fit=crop&q=80"/>
-                <div class="absolute inset-0 bg-matte-black/20 group-hover:bg-matte-black/40 transition-all"></div>
-                <div class="absolute bottom-10 left-10">
-                    <h4 class="font-serif text-2xl text-cream mb-2">Ready-to-Wear</h4>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Explore Category</span>
+                <img class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                     src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80" 
+                     alt="Men and Ladies Footwear"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-matte-black/90 via-matte-black/20 to-transparent group-hover:via-matte-black/40 transition-all flex flex-col justify-end p-10">
+                    <h4 class="font-serif text-2xl text-cream mb-1">Footwear</h4>
+                    <p class="text-[10px] text-cream/60 uppercase tracking-widest mb-3">For Him & Her</p>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 opacity-0 translate-y-4 group-hover:opacity-100 translate-y-0 transition-all duration-500">The Luxury Step Collection</span>
+                     <a href="{% url 'footwear' %}"><button class="w-fit bg-primary text-matte-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-700 hover:bg-white">Explore</button></a>
                 </div>
             </div>
         </div>
@@ -117,53 +108,21 @@
 
     <section class="bg-cream/[0.02] py-24 border-y border-cream/5">
         <div class="max-w-[1440px] mx-auto px-6 lg:px-20">
-            <div class="flex items-center justify-between mb-12">
-                <h3 class="font-serif text-3xl md:text-4xl">New Arrivals</h3>
-                <div class="flex gap-4">
-                    <button class="size-10 border border-cream/20 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-cream hover:text-matte-black">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <button class="size-10 border border-cream/20 flex items-center justify-center hover:bg-primary hover:border-primary transition-all text-cream hover:text-matte-black">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
-                </div>
-            </div>
-            
+            <h3 class="font-serif text-3xl md:text-4xl mb-12">New Arrivals</h3>
             <div class="flex gap-8 overflow-x-auto hide-scrollbar pb-10">
                 {% for x in products %}
                 <div class="min-w-[280px] md:min-w-[320px] group cursor-pointer">
-                    <div class="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-cream/5">
-                        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                             src="{{ x.image.url }}" 
-                             alt="{{ x.name }}"/>
+                    <div class="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-matte-black">
+                        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100" src="{{ x.image.url }}" alt="{{ x.name }}"/>
+                        <div class="absolute bottom-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                             <span class="bg-cream text-matte-black p-3 rounded-full material-symbols-outlined text-sm">shopping_bag</span>
+                        </div>
                     </div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-cream/40 mb-1">{{ x.name }}</p>
-                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors line-clamp-1">{{ x.description }}</h5>
-                    <p class="text-primary font-bold mt-2">{{ x.selling_price }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream/40 mb-1">{{ x.name }}</p>
+                    <h5 class="text-sm font-semibold tracking-wide group-hover:text-primary transition-colors line-clamp-1 italic">{{ x.description }}</h5>
+                    <p class="text-primary font-bold mt-2 tracking-widest">{{ x.selling_price }}</p>
                 </div>
                 {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <section class="py-32 px-6 text-center max-w-3xl mx-auto">
-        <span class="text-primary material-symbols-outlined text-4xl mb-6">workspace_premium</span>
-        <h2 class="font-serif text-4xl md:text-5xl italic mb-8">Crafted for the Eternal</h2>
-        <p class="font-display text-lg font-light leading-relaxed text-cream/70 mb-10">
-            Luxe is built on the philosophy that true luxury is found in the unspoken details. From the weight of our buttons to the invisible seams of our silks, we create pieces that transcend seasons and trends.
-        </p>
-        <a class="text-xs font-bold uppercase tracking-[0.3em] border-b border-cream/30 pb-2 hover:border-primary transition-colors inline-block" href="#">Learn About Our Heritage</a>
-    </section>
-
-    <section class="border-t border-cream/10 py-20 bg-matte-black">
-        <div class="max-w-[1440px] mx-auto px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h3 class="font-serif text-3xl mb-4 text-cream">Join the Inner Circle</h3>
-                <p class="text-cream/50 text-sm font-light">Be the first to access new collections and exclusive editorial content.</p>
-            </div>
-            <div class="flex gap-4">
-                <input class="flex-1 bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-xs uppercase tracking-widest px-0 py-4" placeholder="YOUR EMAIL ADDRESS" type="email"/>
-                <button class="bg-primary text-matte-black px-8 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-cream transition-colors">Subscribe</button>
             </div>
         </div>
     </section>
@@ -173,54 +132,19 @@
     <div class="max-w-[1440px] mx-auto px-6 lg:px-20">
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
             <div class="col-span-2">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="text-primary material-symbols-outlined text-3xl">storm</span>
-                    <h1 class="font-serif text-2xl font-bold tracking-widest text-cream uppercase">BuyME</h1>
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-primary material-symbols-outlined text-4xl">storm</span>
+                    <h1 class="font-serif text-2xl font-bold tracking-[0.3em] text-cream uppercase">BuyMe</h1>
                 </div>
-                <p class="text-cream/40 text-xs font-light leading-relaxed max-w-xs mb-8">
-                    The pinnacle of minimalist high-fashion and artisanal craftsmanship since 1994.
-                </p>
-                <div class="flex gap-4">
-                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">share_reviews</span></a>
-                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">public</span></a>
-                    <a class="text-cream/40 hover:text-primary" href="#"><span class="material-symbols-outlined">play_circle</span></a>
-                </div>
-            </div>
-            <div>
-                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Client Care</h5>
-                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
-                    <li><a class="hover:text-primary transition-colors" href="#">Shipping</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Warranty</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Explore</h5>
-                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
-                    <li><a class="hover:text-primary transition-colors" href="#">Boutiques</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Our Story</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-cream mb-6">Legal</h5>
-                <ul class="text-cream/40 text-[11px] font-medium space-y-4 uppercase tracking-widest">
-                    <li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Cookies</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Accessibility</a></li>
-                </ul>
+                <p class="text-cream/40 text-[11px] font-light leading-relaxed max-w-xs mb-8 uppercase tracking-widest">The pinnacle of minimalist luxury fashion. Designed for the discerning individual.</p>
             </div>
         </div>
-        <div class="flex flex-col md:flex-row justify-between items-center border-t border-cream/5 pt-10 text-[9px] font-bold uppercase tracking-[0.3em] text-cream/20">
-            <p>© 2024 BuyME ATELIER. ALL RIGHTS RESERVED.</p>
-            <div class="flex gap-6 mt-4 md:mt-0">
-                <span>Paris</span>
-                <span>New York</span>
-                <span>Tokyo</span>
-                <span>London</span>
+        <div class="border-t border-cream/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] text-cream/20 tracking-[0.3em] uppercase">
+            <p>© 2026 BuyMe ATELIER. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-8">
+                <a href="#" class="hover:text-primary transition-colors">Privacy</a>
+                <a href="#" class="hover:text-primary transition-colors">Terms</a>
+                <a href="#" class="hover:text-primary transition-colors">Instagram</a>
             </div>
         </div>
     </div>

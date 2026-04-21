@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Saved Addresses | BuyME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-cream overflow-x-hidden">
+    
+    {% include 'customer/navbar.html' %}
+
+    <main class="min-h-screen pt-32 pb-24 px-6 lg:px-20 max-w-[1440px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            
+            <aside class="lg:col-span-3">
+                <div class="sticky top-32 space-y-8">
+                    {% include 'customer/sidebar.html' %}
+                </div>
+            </aside>
+
+            <div class="lg:col-span-9">
+                <header class="mb-16 border-b border-cream/10 pb-8">
+                    <span class="text-primary font-semibold tracking-[0.4em] uppercase text-[10px] mb-2 block">Account Settings</span>
+                    <h1 class="font-serif text-4xl md:text-6xl italic">Saved <span class="text-primary">Addresses</span></h1>
+                    <p class="text-cream/50 text-xs mt-4 uppercase tracking-widest leading-relaxed max-w-xl">
+                        Manage your saved delivery locations for seamless checkouts.
+                    </p>
+                </header>
+
+                <div class="space-y-12">
+                    <!-- Add New Address Button -->
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">Delivery Locations</h2>
+                        <a href="{% url 'customer_address' %}" class="bg-primary text-matte-black px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all">
+                            + Add New Address
+                        </a>
+                    </div>
+
+                    <!-- Addresses List -->
+{% if address %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+{% for address in address %}
+                            <div class="group bg-white/5 border border-cream/10 rounded-xl p-8 hover:border-primary/50 hover:bg-white/10 transition-all overflow-hidden">
+                                <!-- Default Badge -->
+                                {% if address.is_default %}
+                                <div class="mb-4 inline-flex items-center gap-2 bg-primary/20 border border-primary/30 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">
+                                    <span class="material-symbols-outlined text-xs">verified</span>
+                                    Primary Address
+                                </div>
+                                {% endif %}
+
+                                <!-- Address Info -->
+                                <div class="space-y-3 mb-6">
+                                    <h3 class="font-semibold text-lg">{{ address.full_name }}</h3>
+                                    <div class="text-sm space-y-1 text-cream/80">
+                                        <p><span class="material-symbols-outlined text-primary mr-2 text-xs">location_on</span>
+                                            {{ address.house_info }}, {{ address.locality }}
+                                        </p>
+                                        <p>{{ address.city }}, {{ address.state }} - {{ address.pincode }}</p>
+                                        {% if address.landmark %}
+                                        <p class="italic opacity-75">{{ address.landmark }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[11px] text-cream/60">
+                                        <span class="material-symbols-outlined text-xs">{{ address.address_type|lower|add:".png"|cut:" " }}</span>
+                                        <span>{{ address.address_type }}</span>
+                                        <span class="material-symbols-outlined text-xs">phone</span>
+                                        {{ address.phone_number }}
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex flex-wrap gap-2 pt-4 border-t border-cream/10">
+                                    {% if not address.is_default %}
+                                    <form method="POST"  class="flex-1 min-w-[120px]">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="address_id" value="{{ address.id }}">
+                                        <input type="hidden" name="action" value="set_default">
+                                        <button type="submit" class="w-full text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/80 bg-transparent border border-primary/30 px-4 py-2 rounded-sm transition-all">
+                                            Set Primary
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <button disabled class="w-full flex-1 min-w-[120px] bg-primary text-matte-black text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-sm cursor-default flex items-center justify-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">verified</span>
+                                        Primary
+                                    </button>
+                                    {% endif %}
+<a href="{% url 'edit_address' address.id %}" class="text-[10px] font-bold uppercase tracking-widest text-cream/60 hover:text-cream flex items-center gap-1 px-4 py-2">
+                                        <span class="material-symbols-outlined text-xs">edit</span>Edit
+                                    </a>
+                                    <form method="POST" action="{% url 'delete_address' address.id %}" class="flex-1 min-w-[80px]">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="address_id" value="{{ address.id }}">
+                                        <input type="hidden" name="action" value="delete">
+                                   <button type="submit" class="w-full text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-500 bg-transparent border border-red-500/30 px-4 py-2 rounded-sm transition-all" onclick="return confirm('Delete this address?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+{% else %}
+                        <div class="text-center py-24 border-2 border-dashed border-cream/20 rounded-2xl">
+                            <span class="material-symbols-outlined text-6xl text-cream/30 block mx-auto mb-6">location_off</span>
+                            <h3 class="text-2xl font-serif italic mb-4">No Saved Addresses</h3>
+                            <p class="text-cream/50 mb-8 max-w-md mx-auto">Add your first delivery address to save time during checkout.</p>
+                            <a href="{% url 'customer_address' %}" class="inline-block bg-primary text-matte-black px-12 py-5 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all">
+                                Add First Address
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+

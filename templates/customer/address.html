@@ -35,7 +35,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
             <aside class="lg:col-span-3">
-                {% include 'customer/sidebar.html' %}
+             {% include 'customer/sidebar.html' %}
             </aside>
 
             <div class="lg:col-span-6">
@@ -45,99 +45,102 @@
                     <p class="text-cream/40 text-[11px] uppercase tracking-widest font-light">Please provide the precise coordinates for your delivery.</p>
                 </header>
 
-                <form method="POST" class="space-y-10">
-                    {% csrf_token %}
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Full Name</label>
-                            <input type="text" name="full_name" required 
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Phone Number</label>
-                            <input type="tel" name="phone_number" required
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                    </div>
+        <form method="POST" class="space-y-10">
+    {% csrf_token %}
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Pincode</label>
-                            <input type="text" name="pincode" required
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                        <div class="flex flex-col gap-2 md:col-span-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Locality / Area</label>
-                            <input type="text" name="locality" required
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Full Name</label>
+            <input type="text" name="full_name" value="{{ address.full_name|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0">
+        </div>
 
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Flat, House no., Building, Company, Apartment</label>
-                        <input type="text" name="house_info" required
-                            class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                    </div>
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Phone Number</label>
+            <input type="tel" name="phone_number" value="{{ address.phone_number|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0">
+        </div>
+    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">City</label>
-                            <input type="text" name="city" required
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">State</label>
-                            <input type="text" name="state" required
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Country</label>
-                            <input type="text" name="country" value="India" readonly
-                                class="bg-transparent border-b border-cream/10 border-t-0 border-x-0 focus:ring-0 text-sm py-3 px-0 opacity-50 cursor-not-allowed">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Landmark</label>
-                            <input type="text" name="landmark"
-                                class="bg-transparent border-b border-cream/20 border-t-0 border-x-0 focus:ring-0 focus:border-primary text-sm py-3 px-0 transition-colors" placeholder="(Optional)">
-                        </div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Pincode</label>
+            <input type="text" name="pincode" value="{{ address.pincode|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+        </div>
 
-                    <div class="flex flex-wrap gap-12 pt-6">
-                        <div class="space-y-4">
-                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Address Type</p>
-                            <div class="flex gap-6">
-                                <label class="flex items-center gap-2 cursor-pointer group">
-                                    <input type="radio" name="address_type" value="HOME" checked class="hidden peer">
-                                    <span class="w-4 h-4 border border-cream/30 rounded-full peer-checked:bg-primary peer-checked:border-primary transition-all"></span>
-                                    <span class="text-[11px] uppercase tracking-widest text-cream/50 peer-checked:text-cream">Home</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer group">
-                                    <input type="radio" name="address_type" value="WORK" class="hidden peer">
-                                    <span class="w-4 h-4 border border-cream/30 rounded-full peer-checked:bg-primary peer-checked:border-primary transition-all"></span>
-                                    <span class="text-[11px] uppercase tracking-widest text-cream/50 peer-checked:text-cream">Work</span>
-                                </label>
-                            </div>
-                        </div>
+        <div class="flex flex-col gap-2 md:col-span-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Locality / Area</label>
+            <input type="text" name="locality" value="{{ address.locality|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+        </div>
+    </div>
 
-                        <div class="space-y-4">
-                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Default</p>
-                            <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="is_default" class="w-4 h-4 bg-transparent border-cream/30 border text-primary focus:ring-0 rounded-sm">
-                                <span class="text-[11px] uppercase tracking-widest text-cream/50">Set as primary address</span>
-                            </label>
-                        </div>
-                    </div>
+    <div class="flex flex-col gap-2">
+        <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Flat, House no., Building</label>
+        <input type="text" name="house_info" value="{{ address.house_info|default:'' }}" required
+            class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+    </div>
 
-                    <div class="pt-12 border-t border-cream/10 flex flex-col md:flex-row gap-6">
-                        <button type="submit" class="bg-primary text-matte-black px-12 py-5 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all flex-1 md:flex-none">
-                            Deliver to this Address
-                        </button>
-                        <a href="#" class="border border-cream/20 text-cream px-12 py-5 font-bold text-[10px] uppercase tracking-widest hover:bg-cream hover:text-matte-black transition-all text-center">
-                            Back to Selection
-                        </a>
-                    </div>
-                </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">City</label>
+            <input type="text" name="city" value="{{ address.city|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">State</label>
+            <input type="text" name="state" value="{{ address.state|default:'' }}" required
+                class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Country</label>
+            <input type="text" name="country" value="{{ address.country|default:'India' }}" readonly
+                class="bg-transparent border-b border-cream/10 text-sm py-3 px-0 opacity-50">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Landmark</label>
+            <input type="text" name="landmark" value="{{ address.landmark|default:'' }}"
+                class="bg-transparent border-b border-cream/20 focus:border-primary text-sm py-3 px-0">
+        </div>
+    </div>
+
+    <div class="flex flex-wrap gap-12 pt-6">
+        <div class="space-y-4">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Address Type</p>
+
+            <label class="flex items-center gap-2">
+                <input type="radio" name="address_type" value="HOME"
+                {% if address.address_type == "HOME" %}checked{% endif %}>
+                Home
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="radio" name="address_type" value="WORK"
+                {% if address.address_type == "WORK" %}checked{% endif %}>
+                Work
+            </label>
+        </div>
+
+        <div class="space-y-4">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-4">Default</p>
+            <label class="flex items-center gap-3">
+                <input type="checkbox" name="is_default"
+                {% if address.is_default %}checked{% endif %}>
+                Set as primary address
+            </label>
+        </div>
+    </div>
+
+    <div class="pt-12 border-t border-cream/10">
+        <button type="submit" class="bg-primary text-black px-12 py-5 font-bold text-[10px] uppercase tracking-widest">
+            Deliver to this Address
+        </button>
+    </div>
+</form>
             </div>
 
             <div class="lg:col-span-3">

@@ -14,11 +14,6 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-
-
-
-
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
     full_name = models.CharField(max_length=100)
@@ -34,6 +29,14 @@ class Address(models.Model):
     is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            Address.objects.filter(
+                user=self.user,
+                is_default=True
+            ).exclude(id=self.id).update(is_default=False)
+
+        super().save(*args, **kwargs)
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
