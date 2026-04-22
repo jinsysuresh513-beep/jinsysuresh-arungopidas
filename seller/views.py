@@ -407,6 +407,8 @@ def add_product(request):
             is_returnable=is_returnable,
             is_cancellable=is_cancellable,
             return_days=return_days,
+            submission_type="NEW",
+            approval_status="PENDING",
         )
 
 
@@ -510,6 +512,10 @@ def edit_product(request,id):
 
         product.slug = slugify(product.name + "-" + product.sku_code)
 
+        if product.approval_status == "APPROVED":
+            product.submission_type = "EDIT"
+            product.approval_status = "PENDING"
+
         if Product.objects.filter(slug=product.slug).exclude(id=product.id).exists():
             messages.error(request,f"{product.slug} already exists")
             return redirect('edit_product',id=product.id)
@@ -522,6 +528,9 @@ def edit_product(request,id):
         product.is_returnable =  request.POST.get("is_returnable") == 'on'
         product.return_days = request.POST.get('return_days') or 7
         product.is_cancellable = request.POST.get("is_cancellable") == 'on'
+        product.product_rejection_reason = None
+
+
         product.save()
 
         new_image=request.FILES.getlist("images")
@@ -594,7 +603,7 @@ def analytics_page(request):
 
 @seller_required
 def order_page(request):
-    order=Order.objects.all(seller=request.user.seller_profile)
+    order = Order.objects.filter(seller=request.user.seller_profile)
     return render(request,"seller/order_page.html",{'orders':order})
 
 
@@ -627,8 +636,42 @@ def product_preview(request,id,slug):
 @seller_required
 def pending_products(request):
     seller=request.user.seller_profile
-    pending_product=Product.objects.filter(seller=seller,approval_status="PENDING").order_by("-id")
-    return render(request,"seller/pending_products.html",{"pending_product":pending_product})
+    pending_product=Product.objects.filter(seller=seller,approval_status="PENDING").order_by("-created_at")
+    total_pending=pending_product.count()
+    search_keyword=request.GET.get("q")
+    if search_keyword:
+        products = pending_product.filter(
+            Q(name__icontains=search_keyword) |
+            Q(sku_code__icontains=search_keyword)
+        )
+    newly_added = pending_product.filter(submission_type="NEW")
+    edited_products = pending_product.filter(submission_type="EDIT")
+
+    new_count = newly_added.count()
+    edit_count = edited_products.count()
+    paginator = Paginator(pending_product, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    for qs in [newly_added, edited_products, page_obj]:
+        for product in qs:
+            primary = product.images.filter(is_primary=True).first()
+            if primary:
+                product.first_image = primary.image
+            else:
+                first = product.images.first()
+                product.first_image = first.image if first else None
+
+    context = {
+        "pending_product": page_obj,
+            "page_obj": page_obj,
+            "newly_added": newly_added,
+            "edited_products": edited_products,
+            "total_pending": total_pending,
+            "new_count": new_count,
+            "edit_count": edit_count,
+         }
+    return render(request,"seller/pending_products.html",context)
 
 
 
@@ -650,17 +693,20 @@ def rejected_products(request):
             Q(name__icontains= search_keyword) |
             Q(sku_code__icontains= search_keyword)
         )
+
     paginator = Paginator(product, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
+
     for p in page_obj:
         primary = p.images.filter(is_primary=True).first()
         p.first_image = primary.image if primary else None
-        context={
-            "products": page_obj,
-            "page_obj": page_obj,
-            "rejected_count": rejected_count
-        }
+
+    context={
+        "products": page_obj,
+        "page_obj": page_obj,
+        "rejected_count": rejected_count
+    }
 
     return render(request,"seller/rejected_products.html",context)
 
@@ -896,7 +942,7 @@ def update_stock(request,id):
     return redirect('inventory_page')
 
 
-
+@seller_required
 def toggle_product_visibility(request,id):
     seller = request.user.seller_profile
     product = get_object_or_404(Product,id=id,seller=seller)

@@ -1,6 +1,36 @@
 {% extends 'seller/base.html' %}
 
 {% block content %}
+<div id="toast-container" class="fixed bottom-10 left-1/2 -translate-x-1/2 z- flex flex-col gap-2 w-full max-w-max pointer-events-none px-4">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="toast-item transform transition-all duration-500 translate-y-10 opacity-0 pointer-events-auto flex items-center h-9 px-4 rounded-full shadow-2xl border bg-slate-900/95 backdrop-blur-md
+            {% if 'success' in message.tags %}border-emerald-500/50 text-emerald-400
+            {% elif 'error' in message.tags or 'deactivated' in message.tags or 'rejected' in message.tags %}border-rose-500/50 text-rose-400
+            {% elif 'warning' in message.tags %}border-amber-500/50 text-amber-400
+            {% else %}border-blue-500/50 text-blue-400{% endif %}"
+            role="alert">
+
+            <div class="flex-shrink-0 mr-2.5">
+                {% if 'success' in message.tags %}
+                    <i class="fa-solid fa-check text-[10px]"></i>
+                {% elif 'error' in message.tags or 'deactivated' in message.tags or 'rejected' in message.tags %}
+                    <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                {% else %}
+                    <i class="fa-solid fa-info-circle text-[10px]"></i>
+                {% endif %}
+            </div>
+
+            <p class="text-[10px] font-black uppercase tracking-[0.1em] whitespace-nowrap">{{ message }}</p>
+
+            <button onclick="this.parentElement.remove()" class="ml-4 text-white/40 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-[10px]"></i>
+            </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
 <div class="max-w-[1400px] space-y-8" x-data="{ filterOpen: false }">
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -63,14 +93,13 @@
                 <i class="fa-solid fa-eye-slash"></i>
             </div>
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hidden</p>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">InActive</p>
                 <h3 class="text-2xl font-bold text-slate-800">{{hidden_products}}</h3>
             </div>
         </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-
         <div class="p-6 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center p-1 bg-slate-100 rounded-xl w-fit overflow-x-auto">
                 <a href="?" class="px-5 py-2 text-[11px] font-bold rounded-lg transition-all {% if not request.GET.status %}bg-white shadow-sm text-slate-900{% else %}text-slate-500 hover:text-slate-700{% endif %}">All</a>
@@ -94,24 +123,13 @@
                             class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors">
                         <i class="fa-solid fa-sliders"></i>
                     </button>
-
-                    <div x-show="filterOpen"
-                         @click.away="filterOpen = false"
-                         x-transition:enter="transition ease-out duration-100"
-                         x-transition:enter-start="opacity-0 scale-95"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         class="absolute right-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2"
-                         x-cloak>
+                    <div x-show="filterOpen" @click.away="filterOpen = false" class="absolute right-0 mt-2 w-56 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 p-2" x-cloak>
                         <div class="px-3 py-2 border-b border-slate-50">
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Quick Filters</p>
                         </div>
                         <div class="py-1">
-                            <a href="?" class="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg">
-                                <i class="fa-solid fa-list w-4 text-slate-400"></i> Show All
-                            </a>
-                            <a href="?status=out_of_stock" class="flex items-center gap-3 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg">
-                                <i class="fa-solid fa-circle-xmark w-4"></i> Out of Stock
-                            </a>
+                            <a href="?" class="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg"><i class="fa-solid fa-list w-4 text-slate-400"></i> Show All</a>
+                            <a href="?status=out_of_stock" class="flex items-center gap-3 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg"><i class="fa-solid fa-circle-xmark w-4"></i> Out of Stock</a>
                         </div>
                     </div>
                 </div>
@@ -136,13 +154,8 @@
                         <td class="px-6 py-5">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden border border-slate-200/50 flex-shrink-0">
-                                    {% if product.first_image %}
-                                        <img src="{{ product.first_image.url }}" class="w-full h-full object-cover">
-                                    {% else %}
-                                        <div class="w-full h-full flex items-center justify-center text-slate-300">
-                                            <i class="fa-solid fa-image"></i>
-                                        </div>
-                                    {% endif %}
+                                    {% if product.first_image %}<img src="{{ product.first_image.url }}" class="w-full h-full object-cover">
+                                    {% else %}<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="fa-solid fa-image"></i></div>{% endif %}
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-sm font-bold text-slate-800 truncate">{{ product.name }}</p>
@@ -150,13 +163,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-5">
-                            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg uppercase tracking-wider">
-                                {{ product.subcategory.name }}
-                            </span>
-                        </td>
+                        <td class="px-6 py-5 text-[10px] font-bold text-slate-600 uppercase tracking-wider">{{ product.subcategory.name }}</td>
                         <td class="px-6 py-5 text-sm font-bold text-slate-900 text-center">₹{{ product.price }}</td>
-
                         <td class="px-6 py-5 text-center min-w-[140px]">
                             <div id="stock-display-{{ product.id }}">
                                 <span class="text-xs font-bold px-2.5 py-1 rounded-lg border
@@ -167,140 +175,82 @@
                                 </span>
                             </div>
                             <form id="stock-form-{{ product.id }}" method="POST" action="{% url 'update_stock' product.id %}" class="hidden flex items-center justify-center gap-1 mt-1">
-                                {% csrf_token %}
-                                <input type="number" name="stock_quantity" value="{{ product.stock_quantity }}" class="w-16 px-2 py-1 text-xs font-bold border-2 border-green-600 rounded-lg outline-none">
-                                <button type="submit" class="p-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600">
-                                    <i class="fa-solid fa-check text-[10px]"></i>
-                                </button>
+                                {% csrf_token %}<input type="number" name="stock_quantity" value="{{ product.stock_quantity }}" class="w-16 px-2 py-1 text-xs font-bold border-2 border-green-600 rounded-lg outline-none">
+                                <button type="submit" class="p-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600"><i class="fa-solid fa-check text-[10px]"></i></button>
                             </form>
                         </td>
-
                         <td class="px-6 py-5">
                             {% if product.approval_status == 'APPROVED' %}
-                                {% if product.is_active %}
-                                    <span class="flex items-center gap-1.5 text-emerald-600 font-bold text-[10px] uppercase tracking-wide">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
-                                    </span>
-                                {% else %}
-                                    <span class="flex items-center gap-1.5 text-slate-400 font-bold text-[10px] uppercase tracking-wide">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> Inactive
-                                    </span>
-                                {% endif %}
-                            {% elif product.approval_status == 'PENDING' %}
-                                <span class="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] uppercase tracking-wide">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Pending
-                                </span>
-                            {% else %}
-                                <span class="flex items-center gap-1.5 text-rose-600 font-bold text-[10px] uppercase tracking-wide">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Rejected
-                                </span>
-                            {% endif %}
+                                {% if product.is_active %}<span class="flex items-center gap-1.5 text-emerald-600 font-bold text-[10px] uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active</span>
+                                {% else %}<span class="flex items-center gap-1.5 text-slate-400 font-bold text-[10px] uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> Inactive</span>{% endif %}
+                            {% elif product.approval_status == 'PENDING' %}<span class="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Pending</span>
+                            {% else %}<span class="flex items-center gap-1.5 text-rose-600 font-bold text-[10px] uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Rejected</span>{% endif %}
                         </td>
-
                         <td class="px-6 py-5 text-right">
                             <div class="flex items-center justify-end gap-2">
-
                                 <div class="relative group/tooltip">
                                     <form method="POST" action="{% url 'toggle_product_visibility' product.id %}" class="inline">
                                         {% csrf_token %}
-                                        <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg border transition-all
-                                            {% if product.is_active %}
-                                                text-slate-400 hover:text-rose-600 hover:bg-rose-50 border-transparent hover:border-rose-100
-                                            {% else %}
-                                                text-emerald-500 bg-emerald-50 border-emerald-100 hover:bg-emerald-100
-                                            {% endif %}">
+                                        <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg border transition-all {% if product.is_active %}text-slate-400 hover:text-rose-600 hover:bg-rose-50 border-transparent hover:border-rose-100{% else %}text-emerald-500 bg-emerald-50 border-emerald-100 hover:bg-emerald-100{% endif %}">
                                             {% if product.is_active %}<i class="fa-solid fa-eye-slash text-xs"></i>{% else %}<i class="fa-solid fa-eye text-xs"></i>{% endif %}
                                         </button>
                                     </form>
                                     <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">
-                                            {% if product.is_active %}Hide Product{% else %}Show Product{% endif %}
-                                        </div>
+                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">{% if product.is_active %}Hide Product{% else %}Show Product{% endif %}</div>
                                         <div class="w-1.5 h-1.5 bg-slate-800 rotate-45 mx-auto -mt-1"></div>
                                     </div>
                                 </div>
 
                                 <div class="relative group/tooltip">
-                                    <a href="{% url 'product_preview' product.id product.slug %}"
-                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all border border-transparent hover:border-slate-200">
+                                    <a href="{% url 'product_preview' product.id product.slug %}" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all border border-transparent hover:border-slate-200">
                                         <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                                     </a>
                                     <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">
-                                            View Product
-                                        </div>
+                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">View Product</div>
                                         <div class="w-1.5 h-1.5 bg-slate-800 rotate-45 mx-auto -mt-1"></div>
                                     </div>
                                 </div>
 
                                 <div class="relative group/tooltip">
-                                    <button onclick="toggleStockInput('{{ product.id }}')"
-                                            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all">
+                                    <button onclick="toggleStockInput('{{ product.id }}')" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all">
                                         <i class="fa-solid fa-plus text-xs"></i>
                                     </button>
                                     <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">
-                                            Update Stock
-                                        </div>
+                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">Update Stock</div>
                                         <div class="w-1.5 h-1.5 bg-slate-800 rotate-45 mx-auto -mt-1"></div>
                                     </div>
                                 </div>
 
                                 <div class="relative group/tooltip">
-                                    <a href="{% url 'edit_product' product.id %}"
-                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all">
+                                    <a href="{% url 'edit_product' product.id %}" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all">
                                         <i class="fa-solid fa-pen text-xs"></i>
                                     </a>
                                     <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">
-                                            Edit Product
-                                        </div>
+                                        <div class="bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-xl">Edit Product</div>
                                         <div class="w-1.5 h-1.5 bg-slate-800 rotate-45 mx-auto -mt-1"></div>
                                     </div>
                                 </div>
-
                             </div>
                         </td>
                     </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="px-6 py-20 text-center">
-                            <p class="text-sm font-bold text-slate-400">No products found</p>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    {% empty %}<tr><td colspan="6" class="px-6 py-20 text-center"><p class="text-sm font-bold text-slate-400">No products found</p></td></tr>{% endfor %}
                 </tbody>
             </table>
         </div>
 
         {% if products.has_other_pages %}
         <div class="px-6 py-5 border-t border-slate-50 bg-slate-50/30 flex items-center justify-between">
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                Showing {{ products.start_index }} - {{ products.end_index }} of {{ products.paginator.count }}
-            </div>
-
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Showing {{ products.start_index }} - {{ products.end_index }} of {{ products.paginator.count }}</div>
             <div class="flex items-center gap-1.5">
                 {% if products.has_previous %}
-                    <a href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
-                       class="h-8 px-3 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-900 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest">
-                        Prev
-                    </a>
+                    <a href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="h-8 px-3 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-900 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest">Prev</a>
                 {% endif %}
-
                 {% for i in products.paginator.page_range %}
-                    {% if products.number == i %}
-                        <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-900 text-white text-[10px] font-black">{{ i }}</span>
-                    {% elif i > products.number|add:'-3' and i < products.number|add:'3' %}
-                        <a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
-                           class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-[10px] font-bold">{{ i }}</a>
-                    {% endif %}
+                    {% if products.number == i %}<span class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-900 text-white text-[10px] font-black">{{ i }}</span>
+                    {% elif i > products.number|add:'-3' and i < products.number|add:'3' %}<a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-[10px] font-bold">{{ i }}</a>{% endif %}
                 {% endfor %}
-
                 {% if products.has_next %}
-                    <a href="?page={{ products.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
-                       class="h-8 px-3 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-900 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest">
-                        Next
-                    </a>
+                    <a href="?page={{ products.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="h-8 px-3 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-900 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest">Next</a>
                 {% endif %}
             </div>
         </div>
@@ -309,6 +259,7 @@
 </div>
 
 <script>
+// Toggle Stock Input logic
 function toggleStockInput(productId) {
     const display = document.getElementById(`stock-display-${productId}`);
     const form = document.getElementById(`stock-form-${productId}`);
@@ -321,5 +272,20 @@ function toggleStockInput(productId) {
         display.classList.remove('hidden');
     }
 }
+
+// Tactical Slim Toast Logic
+document.addEventListener('DOMContentLoaded', function() {
+    const toasts = document.querySelectorAll('.toast-item');
+    toasts.forEach((toast, index) => {
+        setTimeout(() => {
+            toast.classList.remove('translate-y-10', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        }, index * 150);
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => { toast.remove(); }, 500);
+        }, 3500);
+    });
+});
 </script>
 {% endblock %}

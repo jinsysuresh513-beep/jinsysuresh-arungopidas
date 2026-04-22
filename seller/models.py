@@ -52,6 +52,7 @@ class Product(models.Model):
     tax_percentage = models.FloatField()
     product_rejection_reason = models.TextField(null=True, blank=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
+    submission_type = models.CharField(max_length=10,choices=(("NEW", "New"),("EDIT", "Edit"),), default="NEW")
 
 
 class ProductImage(models.Model):
@@ -59,6 +60,15 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to='product_images/')
     alt_text = models.CharField(max_length=255, blank=True)
     is_primary = models.BooleanField(default=False)
+
+
+class ProductEditRequest(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    field_name = models.CharField(max_length=100)
+    old_value = models.TextField()
+    new_value = models.TextField()
+    status = models.CharField(max_length=20, default="PENDING")
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class InventoryLog(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
