@@ -51,7 +51,7 @@
         </aside>
 
         <div class="lg:col-span-6">
-            <div class="overflow-x-auto border-t border-cream/10">
+            <div class="overflow-x-auto border-t border-cream/10 mb-12">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-cream/10">
@@ -76,28 +76,79 @@
                                     <p class="text-[10px] text-cream/40 uppercase mt-1">{{ item.product.category.name }}</p>
                                 </div>
                             </td>
-                            <td class="py-8 text-sm font-light italic text-cream/60">
-                                {{ item.quantity }}
-                            </td>
-                            <td class="py-8 text-sm font-bold text-primary text-right">
-                                ${{ item.product.price }}
-                            </td>
+                            <td class="py-8 text-sm font-light italic text-cream/60">{{ item.quantity }}</td>
+                            <td class="py-8 text-sm font-bold text-primary text-right">${{ item.product.selling_price }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+
+            <div class="pt-10 border-t border-cream/10">
+                <div class="flex justify-between items-end mb-8">
+                    <h3 class="font-serif text-3xl italic">Shipping <span class="text-primary">Address</span></h3>
+                    <a href="{% url 'saved_address' %}" class="text-[10px] uppercase tracking-widest text-primary border-b border-primary/30 pb-1 hover:text-white transition-all">
+                        View more addresses
+                    </a>
+                </div>
+
+                {% if has_addresses %}
+                    <div class="space-y-4 mb-6">
+                        {% if primary_address %}
+                        <div class="bg-primary/10 border-2 border-primary/30 p-6 rounded-xl">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="material-symbols-outlined text-primary text-sm">verified</span>
+                                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-primary/20 px-3 py-1 rounded-full">Primary</span>
+                            </div>
+                            <h4 class="font-semibold text-sm mb-1">{{ primary_address.full_name }}</h4>
+                            <p class="text-xs text-cream/70 leading-tight">{{ primary_address.house_info }}, {{ primary_address.locality }}, {{ primary_address.city }} - {{ primary_address.pincode }}</p>
+                            <p class="text-[10px] text-cream/50 mt-1 uppercase tracking-wider flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">{{ primary_address.address_type|lower }}</span>
+                                {{ primary_address.phone_number }}
+                            </p>
+                        </div>
+                        {% endif %}
+
+                        {% if other_address %}
+                        <div class="border border-cream/10 p-6 rounded-xl hover:border-primary/50 transition-all">
+                            <h4 class="font-semibold text-sm mb-1">{{ other_address.full_name }}</h4>
+                            <p class="text-xs text-cream/70 leading-tight">{{ other_address.house_info }}, {{ other_address.locality }}, {{ other_address.city }} - {{ other_address.pincode }}</p>
+                            <p class="text-[10px] text-cream/50 mt-1 uppercase tracking-wider flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">{{ other_address.address_type|lower }}</span>
+                                {{ other_address.phone_number }}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if addresses|length > 2 %}
+                    <a href="{% url 'saved_address' %}" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 text-sm font-bold tracking-wider">
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                        View all ({{ addresses|length|add:'-2' }} more)
+                    </a>
+                    {% endif %}
+                {% else %}
+                    <div class="border border-dashed border-cream/20 p-12 text-center group hover:border-primary/50 transition-all bg-matte-black/50">
+                        <p class="text-cream/40 text-[10px] uppercase tracking-widest mb-6">No saved addresses</p>
+                        <a href="{% url 'customer_address' %}" class="inline-block bg-primary text-matte-black px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-cream transition-colors">
+                            Add First Address
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
         <div class="lg:col-span-4">
             <div class="bg-cream/5 p-8 sticky top-32 border border-cream/5">
                 <h2 class="font-serif text-2xl italic mb-8">Execution</h2>
-              <form action="{% url 'checkout' %}" method="POST">
-    {% csrf_token %}
-    ...
-</form>
+                
+                <form method="POST" action="{% url 'proceedcheckout' %}" id="checkoutForm">
                     {% csrf_token %}
                     
+                    {% if primary_address %}
+                    <input type="hidden" name="address_id" value="{{ primary_address.id|default:addresses.first.id }}">
+                    {% endif %}
+
                     <div class="space-y-4 mb-10">
                         <p class="text-[10px] uppercase tracking-widest text-cream/40 mb-4 font-bold">Select Method</p>
                         
@@ -127,10 +178,16 @@
                         </div>
                     </div>
 
-                    <a href="{% url 'customer_order' %}"><button type="submit" id="submit_btn" class="w-full bg-primary text-matte-black py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-cream transition-colors">
-                        Place Order
-                       
-                    </button> </a>
+                    <button type="submit" id="submit_btn" 
+                        {% if not has_addresses %}disabled title="Please add an address first"{% endif %}
+                        class="w-full py-5 text-[10px] font-bold uppercase tracking-widest transition-all
+                        {% if not has_addresses %}
+                            bg-cream/10 text-cream/40 cursor-not-allowed border border-cream/10
+                        {% else %}
+                            bg-primary text-matte-black hover:bg-cream cursor-pointer
+                        {% endif %}">
+                        {% if not has_addresses %}Address Required{% else %}Place Order{% endif %}
+                    </button>
                 </form>
 
                 <div class="mt-8 flex items-center justify-center gap-2 text-[9px] uppercase tracking-widest text-cream/30">
@@ -147,13 +204,20 @@
     function updateButton() {
         const codRadio = document.getElementById('cod_radio');
         const submitBtn = document.getElementById('submit_btn');
+        // Safely evaluate django bool context
+        const hasAddress = {{ has_addresses|yesno:"true,false" }};
 
-        if (codRadio.checked) {
-            submitBtn.innerText = "Place Order";
-        } else {
-            submitBtn.innerText = "Proceed to Payment";
+        if (hasAddress) {
+            if (codRadio.checked) {
+                submitBtn.innerText = "Place Order";
+            } else {
+                submitBtn.innerText = "Proceed to Payment";
+            }
         }
     }
+
+    // Run on load to ensure initial state is correct
+    document.addEventListener('DOMContentLoaded', updateButton);
 </script>
 
 </body>

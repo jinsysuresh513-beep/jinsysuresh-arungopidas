@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Electronics | BuyMe ATELIER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .product-image-container { background-color: #262626; }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-cream overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 px-6 lg:px-20 py-8 flex justify-between items-center bg-background-dark/90 backdrop-blur-md border-b border-cream/5">
+        <div class="flex items-center gap-3">
+            <span class="text-primary material-symbols-outlined text-2xl">storm</span>
+            <h1 class="font-serif text-xl font-bold tracking-[0.3em] uppercase">BuyMe</h1>
+        </div>
+        <div class="flex gap-8 items-center">
+            <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">search</span>
+            <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">shopping_bag</span>
+        </div>
+    </nav>
+
+    <main class="pt-40 pb-24">
+        <header class="px-6 lg:px-20 max-w-[1440px] mx-auto mb-20">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div class="max-w-2xl">
+                    <nav class="flex gap-2 text-[10px] uppercase tracking-[0.3em] text-primary mb-6">
+                        <a href="{% url 'home' %}" class="hover:text-white transition-colors">Home</a>
+                        <span>/</span>
+                        <span class="text-white/40">Collections</span>
+                    </nav>
+                    <h1 class="font-serif text-5xl md:text-7xl mb-6 italic">Premium <br/>Electronics</h1>
+                    <p class="text-cream/50 text-xs uppercase tracking-widest leading-loose max-w-lg">
+                        Where acoustic excellence meets sculptural design. Discover our curated selection of high-fidelity sound systems.
+                    </p>
+                </div>
+                <div class="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold">
+                    <span class="text-cream/30">Sort By:</span>
+                    <button class="border border-cream/10 px-6 py-3 hover:border-primary transition-all">Featured</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="px-6 lg:px-20 max-w-[1440px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+                
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-6 overflow-hidden product-image-container">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Beoplay H95" 
+                             class="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"/>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="bg-primary text-matte-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest">View Details</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary mb-2">Bang & Olufsen</p>
+                            <h3 class="font-serif text-xl italic group-hover:text-primary transition-colors">Beoplay H95 Headphones</h3>
+                        </div>
+                        <p class="font-bold tracking-widest text-sm text-primary">$899</p>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-6 overflow-hidden product-image-container">
+                        <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Phantom I Gold" 
+                             class="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"/>
+                        <div class="absolute top-4 left-4 z-10">
+                            <span class="bg-primary text-matte-black px-3 py-1 text-[8px] font-black uppercase tracking-tighter">Limited Edition</span>
+                        </div>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="bg-primary text-matte-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest">View Details</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary mb-2">Devialet</p>
+                            <h3 class="font-serif text-xl italic group-hover:text-primary transition-colors">Phantom I Gold Speaker</h3>
+                        </div>
+                        <p class="font-bold tracking-widest text-sm text-primary">$3,200</p>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-6 overflow-hidden product-image-container">
+                        <img src="https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Debut Carbon" 
+                             class="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"/>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="bg-primary text-matte-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest">View Details</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary mb-2">Pro-Ject</p>
+                            <h3 class="font-serif text-xl italic group-hover:text-primary transition-colors">Debut Carbon Turntable</h3>
+                        </div>
+                        <p class="font-bold tracking-widest text-sm text-primary">$599</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="mt-32 flex justify-center items-center gap-12 border-t border-cream/5 pt-16">
+            <button class="material-symbols-outlined text-cream/20 hover:text-primary transition-colors">west</button>
+            <span class="text-[10px] tracking-[0.5em] font-bold text-cream/40">PAGE 01 <span class="mx-4 text-cream/10">/</span> 04</span>
+            <button class="material-symbols-outlined text-cream/20 hover:text-primary transition-colors">east</button>
+        </div>
+    </main>
+
+    <footer class="bg-black border-t border-cream/5 pt-24 pb-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-20 text-center">
+            <div class="flex justify-center items-center gap-3 mb-8">
+                <span class="text-primary material-symbols-outlined text-3xl">storm</span>
+                <h1 class="font-serif text-2xl font-bold tracking-[0.3em] uppercase">BuyMe</h1>
+            </div>
+            <p class="text-[9px] text-cream/20 tracking-[0.4em] uppercase">© 2026 BuyMe ATELIER. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

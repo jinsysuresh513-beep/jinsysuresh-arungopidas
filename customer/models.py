@@ -34,8 +34,16 @@ class Order(models.Model):
     order_number = models.CharField(max_length=100, unique=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status = models.CharField(max_length=20, default='PENDING')
-    order_status = models.CharField(max_length=20, default='PLACED')
+    order_status = models.CharField(max_length=20,  choices=[
+        ("PENDING", "Pending"),
+        ("SHIPPED", "Shipped"),
+        ("OUT_FOR_DELIVERY", "Out for Delivery"),
+        ("DELIVERED", "Delivered"),
+        ("CANCELLED", "Cancelled"),
+    ], default='PROCESSING')
     ordered_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return (f"{self.order_number}")
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")

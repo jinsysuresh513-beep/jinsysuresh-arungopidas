@@ -12,8 +12,6 @@ from seller.decorators import seller_required, new_seller_only
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-
-
 from customer.models import Order
 from .models import SellerProfile, SellerEditRequest
 from .models import Product,ProductImage

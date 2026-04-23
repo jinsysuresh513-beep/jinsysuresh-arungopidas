@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Footwear | BuyMe ATELIER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dda71d",
+                        "background-dark": "#1A1A1A",
+                        "cream": "#F5F5DC",
+                        "matte-black": "#1A1A1A",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal { animation: slideUp 1s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-cream overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 px-6 lg:px-20 py-8 flex justify-between items-center bg-background-dark/90 backdrop-blur-md border-b border-cream/5">
+        <div class="flex items-center gap-3">
+            <span class="text-primary material-symbols-outlined text-2xl">storm</span>
+            <h1 class="font-serif text-xl font-bold tracking-[0.3em] uppercase">BuyMe</h1>
+        </div>
+        <div class="flex gap-8 items-center text-sm uppercase tracking-widest font-bold">
+            <a href="/" class="hover:text-primary transition-colors">Home</a>
+            <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">shopping_bag</span>
+        </div>
+    </nav>
+
+    <main class="pt-40 pb-24">
+        <header class="px-6 lg:px-20 max-w-[1440px] mx-auto mb-20 animate-reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div class="max-w-2xl">
+                    <nav class="flex gap-2 text-[10px] uppercase tracking-[0.4em] text-primary mb-6">
+                        <a href="/" class="hover:text-white transition-colors">Home</a>
+                        <span>/</span>
+                        <span class="text-white/40">Footwear</span>
+                    </nav>
+                    <h1 class="font-serif text-6xl md:text-8xl mb-6 italic">The Luxury <br/>Step</h1>
+                    <p class="text-cream/50 text-xs uppercase tracking-[0.3em] leading-relaxed max-w-md">
+                        Meticulously crafted footwear for the modern explorer. From Italian leather loafers to sculptural sneakers.
+                    </p>
+                </div>
+                <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest font-bold border-b border-cream/10 pb-4">
+                    <button class="hover:text-primary">Men</button>
+                    <button class="text-white/30 hover:text-primary">Women</button>
+                    <button class="text-white/30 hover:text-primary">Bespoke</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="px-6 lg:px-20 max-w-[1440px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-24">
+                
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-8 overflow-hidden bg-neutral-900">
+                        <img src="https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&q=80" 
+                             alt="Luxury Loafer" 
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"/>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="bg-primary text-matte-black px-10 py-4 text-[10px] font-bold uppercase tracking-widest">Select Size</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary">Heritage Collection</p>
+                            <span class="text-[10px] text-cream/40">01</span>
+                        </div>
+                        <h3 class="font-serif text-2xl italic mb-3 group-hover:text-primary transition-colors">The Midnight Loafer</h3>
+                        <p class="text-cream font-bold tracking-widest text-sm">$640</p>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-8 overflow-hidden bg-neutral-900">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80" 
+                             alt="White Sculptural Sneaker" 
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"/>
+                        <div class="absolute top-6 left-6 z-10">
+                            <span class="bg-cream text-matte-black px-3 py-1 text-[8px] font-black uppercase tracking-tighter">Sold Out</span>
+                        </div>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="border border-white/20 text-white px-10 py-4 text-[10px] font-bold uppercase tracking-widest">Notify Me</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary">Contemporary</p>
+                            <span class="text-[10px] text-cream/40">02</span>
+                        </div>
+                        <h3 class="font-serif text-2xl italic mb-3 group-hover:text-primary transition-colors">Aero Sculpt Sneaker</h3>
+                        <p class="text-cream font-bold tracking-widest text-sm">$420</p>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-8 overflow-hidden bg-neutral-900">
+                        <img src="https://images.unsplash.com/photo-1638247025967-b4e38f787b76?auto=format&fit=crop&q=80" 
+                             alt="Chelsea Boot" 
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"/>
+                        <div class="absolute inset-0 bg-matte-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                            <button class="bg-primary text-matte-black px-10 py-4 text-[10px] font-bold uppercase tracking-widest">Select Size</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-[9px] uppercase tracking-[0.4em] text-primary">Limited Release</p>
+                            <span class="text-[10px] text-cream/40">03</span>
+                        </div>
+                        <h3 class="font-serif text-2xl italic mb-3 group-hover:text-primary transition-colors">Vanguard Chelsea Boot</h3>
+                        <p class="text-cream font-bold tracking-widest text-sm">$890</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="mt-32 flex justify-center items-center gap-12 border-t border-cream/5 pt-16">
+            <button class="material-symbols-outlined text-cream/20 hover:text-primary transition-colors">west</button>
+            <div class="flex items-center gap-4">
+                <span class="w-8 h-[1px] bg-primary"></span>
+                <span class="text-[10px] tracking-[0.5em] font-bold text-primary">01</span>
+                <span class="text-[10px] tracking-[0.5em] font-bold text-cream/20">02</span>
+                <span class="text-[10px] tracking-[0.5em] font-bold text-cream/20">03</span>
+            </div>
+            <button class="material-symbols-outlined text-cream/20 hover:text-primary transition-colors">east</button>
+        </div>
+    </main>
+
+    <footer class="bg-black border-t border-cream/5 pt-24 pb-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-20">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-20">
+                <div class="flex items-center gap-3">
+                    <span class="text-primary material-symbols-outlined text-3xl">storm</span>
+                    <h1 class="font-serif text-2xl font-bold tracking-[0.3em] uppercase">BuyMe</h1>
+                </div>
+                <div class="grid grid-cols-2 gap-20">
+                    <div>
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest mb-6 text-primary">Discover</h4>
+                        <ul class="text-[10px] uppercase tracking-widest space-y-4 text-cream/40">
+                            <li><a href="#" class="hover:text-white">New Arrivals</a></li>
+                            <li><a href="#" class="hover:text-white">Electronics</a></li>
+                            <li><a href="#" class="hover:text-white">Handbags</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-cream/5 gap-6">
+                <p class="text-[9px] text-cream/20 tracking-[0.4em] uppercase">© 2026 BuyMe ATELIER. All Rights Reserved.</p>
+                <div class="flex gap-8 text-[9px] tracking-widest text-cream/40">
+                    <a href="#" class="hover:text-primary transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-primary transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

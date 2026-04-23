@@ -9,6 +9,8 @@ urlpatterns = [
     path('customer_profile/', views.customerprofile, name='customer_profile'),
     #----------------------------------------------------------------------------
     path('customerorder/',views.customerorder,name="customer_order"),
+    path('ordersuccess/<int:id>/',views.ordersuccess,name="ordersuccess"),
+    path("cancelorder/<int:id>/", views.cancelorder, name="cancelorder"),
     path('customerwishlist/',views.customerwishlist,name="customer_wishlist"),
     path('customersettings/',views.customersettings,name="customer_settings"),
     path('productlist/',views.productlist,name="productlist"),
@@ -21,7 +23,14 @@ urlpatterns = [
     path('wishlist/<int:id>/',views.wishlist,name="wishlist"),
     path('wishlistview/',views.wishlistview,name="wishlistview"),
     path('removewishlist/<int:id>/',views.removewishlist,name="removewishlist"),
-    path('customeraddress/',views.customer_address,name="customeraddress"),
+    path('customeraddress/',views.customer_address,name="customer_address"),
+    path('saved-addresses/',views.savedaddress,name="saved_address"),
+    path('delete_address/<int:id>/',views.deleteaddress,name="delete_address"),
+    path('edit_address/<int:id>/',views.editaddress,name="edit_address"),
     path('checkout/',views.checkout,name="checkout"),
+    path('proceedcheckout/',views.proceedcheckout,name="proceedcheckout"),
+    path('electronics/',views.electronic,name="electronics"),
+    path('handbag/',views.handbag,name="handbag"),
+    path('footwear/',views.footwear,name="footwear"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
